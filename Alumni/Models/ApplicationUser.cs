@@ -10,5 +10,6 @@ namespace Alumni.Models
         public string LastName { get; set; }
         public Alumni? Alumni { get; set; }
         public FacultyRepresentative? FacultyRepresentative { get; set; }
+
     }
 }

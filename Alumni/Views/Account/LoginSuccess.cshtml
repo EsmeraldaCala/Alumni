@@ -1,0 +1,12 @@
+﻿<h2>Authenticated. Wait 2 seconds or click continue</h2>
+<p>
+    <a href="@ViewBag.ReturnUrl">
+        Continue
+    </a>
+</p>
+
+<script>
+    setTimeout(function () {
+        window.location = "@ViewBag.ReturnUrl";
+    }, 200)
+</script>

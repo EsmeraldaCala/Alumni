@@ -4,16 +4,18 @@ using Alumni.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Alumni.Data.Migrations
+namespace Alumni.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230916152254_AddedAlumniAndFacultyRepresentativesAndEvents")]
+    partial class AddedAlumniAndFacultyRepresentativesAndEvents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,14 +234,14 @@ namespace Alumni.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "919dc307-894d-4e08-834e-87ce2ab02782",
+                            ConcurrencyStamp = "fca3afac-727b-449e-bba4-3fab289f418a",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "3dbed7da-23c1-44c6-af51-8bf2f0dbe099",
+                            ConcurrencyStamp = "4f539af7-5fb1-4e1b-a288-e7ca56b68c61",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
                         });

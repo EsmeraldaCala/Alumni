@@ -1,33 +1,87 @@
 ﻿using Alumni.Data;
 using Alumni.Models;
 using Alumni.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Alumni.Controllers
 {
     using Alumni = Models.Alumni;
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IScopedAuthentication _auth;
 
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment, IScopedAuthentication auth)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
+            _auth = auth;
         }
+        // GET: Login
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Welcome()
+        {
+            return View();
+        }
+        // POST: Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var claim = User.Claims;
+                if (result.Succeeded)
+                {
+
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+                    await _signInManager.RefreshSignInAsync(user);
+                    _auth.Identity = userPrincipal.Identity;
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _auth.Identity = null;
+            return RedirectToAction("Index", "Home");
+        }
+
+
 
         [HttpGet]
         public IActionResult RegisterAlumni()
         {
-            return View();
+            return View(new AlumniRegisterViewModel());
         }
 
         [HttpPost]
@@ -52,6 +106,14 @@ namespace Alumni.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "Alumni");
 
+                    // Add claims for email and name
+                    await _userManager.AddClaimsAsync(user, new[]
+                    {
+                    new Claim(ClaimTypes.Name, $"{model.FirstName} {model.LastName}"),
+                    new Claim(ClaimTypes.Email, model.Email),
+                    new Claim(ClaimTypes.Role, "User")
+                    });
+
                     var alumni = new Alumni
                     {
                         UserId = user.Id,
@@ -65,6 +127,9 @@ namespace Alumni.Controllers
                     await _dbContext.SaveChangesAsync();
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+                    await _signInManager.RefreshSignInAsync(user);
+                    _auth.Identity = userPrincipal.Identity;
                     return RedirectToAction("index", "home");
                 }
 
@@ -79,7 +144,7 @@ namespace Alumni.Controllers
         [HttpGet]
         public IActionResult RegisterFacultyRep()
         {
-            return View();
+            return View(new FacultyRepRegisterViewModel());
         }
 
         [HttpPost]
@@ -114,6 +179,9 @@ namespace Alumni.Controllers
                     await _dbContext.SaveChangesAsync();
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+                    await _signInManager.RefreshSignInAsync(user);
+                    _auth.Identity = userPrincipal.Identity;
                     return RedirectToAction("index", "home");
                 }
 

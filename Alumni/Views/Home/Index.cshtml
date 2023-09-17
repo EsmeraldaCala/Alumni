@@ -1,8 +1,28 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Alumni>
+
+@{
+    ViewData["Title"] = "Alumni List";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var alumnus in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4" style="border-color: #007BFF; border-width: 2px;">
+                    <img class="card-img-top rounded-circle mx-auto d-block" style="width: 70%; margin-top: 20px; border: 3px solid #007BFF;" src="@Url.Action("GetUserImage", "Home", new { id = alumnus.UserId })" alt="Alumni photo">
+                    <div class="card-body" style="background-color: #f8f9fa;">
+                        <h5 class="card-title" style="color: #007BFF;">@($"{alumnus.ApplicationUser.FirstName} {alumnus.ApplicationUser.LastName}")</h5>
+                        <p class="card-text" style="color: #343a40;">
+                            <strong style="color: #6c757d;">Field of Study:</strong> @alumnus.FieldOfStudy <br />
+                            <strong style="color: #6c757d;">Job Position:</strong> @alumnus.JobPosition <br />
+                            <strong style="color: #6c757d;">Company:</strong> @alumnus.Company
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
