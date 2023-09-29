@@ -16,7 +16,7 @@ namespace Alumni.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private readonly UserManager<ApplicationUser> _userManager;
-
+        
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
@@ -32,6 +32,8 @@ namespace Alumni.Controllers
             var alumni = await _context.Alumni.Include(a => a.ApplicationUser).ToListAsync();
             return View(alumni);
         }
+
+
         public IActionResult GetUserImage(int id)
         {
             var user = _userManager.Users.FirstOrDefault(u => u.Id == id);
@@ -48,6 +50,22 @@ namespace Alumni.Controllers
 
             return NotFound();
         }
+        //public IActionResult GetEventPhoto(int id)
+        //{
+        //    var events = _userManager.Events.FirstOrDefault(u => u.Id == id);
+
+        //    if (events != null)
+        //    {
+        //        var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", events.Photo);
+        //        if (System.IO.File.Exists(imagePath))
+        //        {
+        //            var image = System.IO.File.OpenRead(imagePath);
+        //            return File(image, "image/jpeg");
+        //        }
+        //    }
+
+        //    return NotFound();
+        //}
 
 
         public IActionResult Privacy()

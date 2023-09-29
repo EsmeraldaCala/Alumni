@@ -10,6 +10,14 @@
 
 <!-- Bootstrap JavaScript (Add this before the closing </body> tag) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+<!-- Import Bootstrap JS Bundle (includes Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+
+<!-- Import Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
 <style>
@@ -24,7 +32,69 @@
         width: 100%;
         height: 100%;
    }
-        
+   .card{
+       padding: 50px 30px 50px 30px;
+       margin:auto;
+       margin-top: 20%;
+       opacity: 0.9;
+       text-align: center;
+   }
+
+   
+    .social-link {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+        border-radius: 50%;
+        transition: all 0.3s;
+        font-size: 0.9rem;
+    }
+
+        .social-link:hover, .social-link:focus {
+            background: #ddd;
+            text-decoration: none;
+            color: #555;
+        }
+
+    /* Default styling for the card */
+    .bg-white {
+        background-color: white;
+        transition: background-color 0.3s ease-in-out; /* Add a transition for smooth color change */
+    }
+
+    /* Hidden information */
+    .additional-info {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* Style for the text within the card */
+    .bg-white:hover {
+        background-color: white; /* Ensure the background remains white on hover */
+    }
+
+        .bg-white:hover .additional-info {
+            display: block; /* Show on hover */
+        }
+
+    .additional-info-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+  
 </style>
 <div id="carouselExample" class="carousel slide  w-100">
     <div class="carousel-inner ">
@@ -33,6 +103,12 @@
         </div>
         <div class="carousel-item">
             <img src="images/second-photo.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="card" style="width:fit-content;">
+                <h1 class="card-title">Welcome to UMT Alumni</h1>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                
+            </div>
         </div>
        
     </div>
@@ -45,13 +121,80 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+<div class="container py-5">
+    <div class="row text-center text-black">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="display-4">Meet Our Alumni Students</h1>
+            <p class="lead mb-0">Using Bootstrap 4 grid and utilities, create a nice team page.</p>
+        </div>
+    </div>
+</div><!-- End -->
 
-<div class="container mt-5">
+
+<div class="container">
+    <div class="row text-center">
+        @foreach (var alumnus in Model.Take(4))
+        {
+            <div class="col-xl-3 col-sm-6 mb-5">
+                <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
+                    <img src="@Url.Action("GetUserImage", "Home", new { id = alumnus.UserId })" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
+                    <h5 class="mb-0">@alumnus.ApplicationUser.FirstName @alumnus.ApplicationUser.LastName</h5><span class="small text-uppercase text-muted">@alumnus.JobPosition at @alumnus.Company</span>
+
+                    <div class="additional-info text-left">
+                        <div class="additional-info-inner ">
+                            <h5 class="mb-4">@alumnus.ApplicationUser.FirstName.ToUpper() @alumnus.ApplicationUser.LastName.ToUpper()</h5>
+                            <span class="small text-uppercase text-muted mb-4">@alumnus.JobPosition at @alumnus.Company</span>
+                            <p>EMAIL: @alumnus.ApplicationUser.Email</p>
+                            <p>PHONE: @alumnus.ApplicationUser.PhoneNumber</p>
+                            <p>GRADUATION DATE: @alumnus.GraduationDate</p>
+                            <p>FIELD OF STUDY: @alumnus.FieldOfStudy</p>
+                            <!-- Add more information as needed -->
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row text-center">
+        @foreach (var events in Model.Take(4))
+        {
+            <div class="col-xl-3 col-sm-6 mb-5">
+                <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
+                    <img src="@Url.Action("GetEvenPhoto", "Home", new { id = alumnus.UserId })" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
+                    <h5 class="mb-0">@alumnus.ApplicationUser.FirstName @alumnus.ApplicationUser.LastName</h5><span class="small text-uppercase text-muted">@alumnus.JobPosition at @alumnus.Company</span>
+
+                    <div class="additional-info text-left">
+                        <div class="additional-info-inner ">
+                            <h5 class="mb-4">@alumnus.ApplicationUser.FirstName.ToUpper() @alumnus.ApplicationUser.LastName.ToUpper()</h5>
+                            <span class="small text-uppercase text-muted mb-4">@alumnus.JobPosition at @alumnus.Company</span>
+                            <p>EMAIL: @alumnus.ApplicationUser.Email</p>
+                            <p>PHONE: @alumnus.ApplicationUser.PhoneNumber</p>
+                            <p>GRADUATION DATE: @alumnus.GraduationDate</p>
+                            <p>FIELD OF STUDY: @alumnus.FieldOfStudy</p>
+                            <!-- Add more information as needed -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@* 
+ <div class="container mt-5">
     <div class="row">
+        <h1>Meet Our Alumni Students</h1>
         @foreach (var alumnus in Model)
         {
             <div class="col-md-4">
-                <div class="card mb-4" style="border-color: #007BFF; border-width: 2px;">
+                <div class="card mb-4" style="border-color: grey; border-width: 1px;">
                     <img class="card-img-top rounded-circle mx-auto d-block" style="width: 70%; margin-top: 20px; border: 3px solid #007BFF;" src="@Url.Action("GetUserImage", "Home", new { id = alumnus.UserId })" alt="Alumni photo">
                     <div class="card-body" style="background-color: #f8f9fa;">
                         <h5 class="card-title" style="color: #007BFF;">@($"{alumnus.ApplicationUser.FirstName} {alumnus.ApplicationUser.LastName}")</h5>
@@ -65,4 +208,4 @@
             </div>
         }
     </div>
-</div>
+</div>  *@
