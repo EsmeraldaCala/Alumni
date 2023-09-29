@@ -21,6 +21,7 @@ namespace Alumni.Models.ViewModel
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        
         public string FieldOfStudy { get; set; }
         public string JobPosition { get; set; }
         public DateTime GraduationDate { get; set; }
@@ -50,7 +51,6 @@ namespace Alumni.Models.ViewModel
 
 
         public string Faculty { get; set; }
-        public string FieldOfStudy { get; set; }
         public IFormFile ProfilePicture { get; set; }
 
     }

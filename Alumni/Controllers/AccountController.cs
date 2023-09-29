@@ -172,7 +172,7 @@ namespace Alumni.Controllers
                     {
                         UserId = user.Id,
                         Faculty = model.Faculty,
-                        FieldOfStudy = model.FieldOfStudy
+                      
                     };
 
                     _dbContext.FacultyRepresentatives.Add(facultyRep);

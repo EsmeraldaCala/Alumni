@@ -4,6 +4,7 @@ using Alumni.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Alumni.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230917164400_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,9 +156,6 @@ namespace Alumni.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal?>("TicketPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -184,6 +183,10 @@ namespace Alumni.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Faculty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FieldOfStudy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -231,14 +234,14 @@ namespace Alumni.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "644a46a4-52dd-4ab3-b076-58836ff1246e",
+                            ConcurrencyStamp = "c01f931f-20b2-477a-8853-2f5380f40251",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "09cb30d8-d935-4011-9e92-b3ab660649e8",
+                            ConcurrencyStamp = "f33d0884-b546-4ae8-b11a-6481e980bccf",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
                         });

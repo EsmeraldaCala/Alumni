@@ -1,14 +1,14 @@
-﻿    @model IEnumerable<Events>
+﻿@model IEnumerable<Alumni>
 
 @{
-    ViewData["Title"] = "Events Index";
+    ViewData["Title"] = "Alumni Students";
 }
 <style>
     .mainSection {
         background-image: url("images/main-photo.jpeg");
         background-repeat: no-repeat;
         opacity: 0.8;
-        background-size: cover; 
+        background-size: cover;
         background-position: center center;
         height: 300px;
         background-image: url("images/main-photo.jpeg");
@@ -21,52 +21,52 @@
         align-items: center; /* Center vertically */
         text-align: center; /* Center text within the div */
         color: white; /* Text color */
-       
     }
-    .MenuHeader{
+
+    .MenuHeader {
         z-index: 2;
         font-size: 4rem; /* Adjust font size as needed */
         font-weight: bold; /* Make text bold */
     }
 
-    .EventsWrapper{
+    .EventsWrapper {
         margin-top: 50px;
         margin-bottom: 50px;
     }
 </style>
 <div class="mainSection">
-  <h2 class="MenuHeader ">News & Events</h2>
+    <h2 class="MenuHeader ">News & Events</h2>
 </div>
-<div class="container" >
+<div class="container">
     <div class="row ">
-       
-       @*  @if (User.Identity.IsAuthenticated){   *@
+
+        @*  @if (User.Identity.IsAuthenticated){   *@
         <div class="container mt-4 d-flex justify-content-end">
             <a asp-action="Create" class="btn btn-primary">Create New Event</a>
         </div>
-    @*   } *@
-        @foreach (var events in Model)
-        {           
+        @*   } *@
+        @* @foreach (var events in Model)
+        {
             <div class="EventsWrapper col-md-4 ">
-            <div class="card mb-4" style="width: 22rem; height:35rem; margin: 20px 20px">
-                <img src="@Url.Action("GetEventImage", "Home", new { id = events.Id })" class="card-img" alt="Event photo">
-                <div class="card-body">
+                <div class="card mb-4" style="width: 22rem; height:35rem; margin: 20px 20px">
+                    <img src="@Url.Action("GetEventImage", "Home", new { id = events.Id })" class="card-img" alt="Event photo">
+                    <div class="card-body">
                         <h5 class="card-title" style="color: #0353A4; font-weight: bold">@($"{events.Title.ToUpper()}")</h5>
-                    <p class="card-text" style="color: #343a40;">
+                        <p class="card-text" style="color: #343a40;">
                             <strong style="color: #0353A4;">Description:</strong> @events.Description <br />
                             <strong style="color: #0353A4;">Date and Time:</strong> @events.Date <br />
                             <strong style="color: #0353A4;">Location:</strong> @events.EventLocation<br />
                             <strong style="color: #0353A4;">Ticket Price:</strong> @events.TicketPrice <br />
                             <strong style="color: #0353A4;">Published By:</strong> @events.ApplicationUser.FirstName @events.ApplicationUser.LastName <br />
 
-                    </p>
-                        
-                            <a asp-action="Edit" asp-route-id="@events.Id" class="btn btn-secondary btn-sm">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@events.Id" class="btn btn-danger btn-sm">Delete</a>
-                       
+                        </p>
+
+                        <a asp-action="Edit" asp-route-id="@events.Id" class="btn btn-secondary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@events.Id" class="btn btn-danger btn-sm">Delete</a>
+
                     </div>
-                </div>    
-            </div>  
-        }
+                </div>
+            </div>
+        } *@
     </div>
 </div>

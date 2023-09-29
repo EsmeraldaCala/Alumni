@@ -8,6 +8,7 @@ namespace Alumni.Models
         public string Title { get; set; }
         public string? Description { get; set; }
 
+        public string? Photo {  get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]
         public int UserId { get; set; }

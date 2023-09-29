@@ -5,7 +5,6 @@ namespace Alumni.Models
     public class FacultyRepresentative : BaseEntity
     {
         public string Faculty { get; set; }
-        public string FieldOfStudy { get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]
         public int UserId { get; set; }
