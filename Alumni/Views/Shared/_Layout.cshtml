@@ -9,33 +9,61 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Alumni.styles.css" asp-append-version="true" />
 </head>
+
+<style>
+    .nav-link {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-weight: bold;
+        font-size: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        color: white;
+    }
+
+    li {
+        box-shadow: inset 0 0 0 0 #54b3d6;
+        color: white;
+        margin: 0 -.25rem;
+        padding: 0 .25rem;
+        transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+    }
+
+        li:hover {
+            box-shadow: inset 250px 0 0 0 #54b3d6;
+        }
+    
+</style>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow pt-4 pb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Alumni</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img style="width: 50%" src="images/AlumniUMT LOGO.png" /> </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                    <ul class="navbar-nav navbar-nav-left">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (_authentication.IsFacultyRepresentative())
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Index">Events</a>
-                            </li>
-                        }
+                        <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Events" asp-action="Index">Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="" asp-controller="Job Opportunities" asp-action="Index">Job Opportunities</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="" asp-controller="AlumniStudents" asp-action="Index">Our Alumni Students</a>
+                        </li>
+                     
                     </ul>
-                    <partial name="_LoginPartial" />
+                   @*  <partial name="_LoginPartial" /> *@
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container" style="width: 100%">
+    <div class="container-fluid" >
         <main role="main" >
             @RenderBody()
         </main>
