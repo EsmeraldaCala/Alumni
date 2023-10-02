@@ -1,8 +1,4 @@
-﻿@model IEnumerable<Alumni>
-
-@{
-    ViewData["Title"] = "Alumni List";
-}
+﻿@model HomeIndexViewModel
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
 <!-- Bootstrap CSS (Add this in the head section of your HTML) -->
@@ -133,7 +129,7 @@
 
 <div class="container">
     <div class="row text-center">
-        @foreach (var alumnus in Model.Take(4))
+        @foreach (var alumnus in Model.AlumniList.Take(4))
         {
             <div class="col-xl-3 col-sm-6 mb-5">
                 <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
@@ -160,24 +156,31 @@
 
 
 <div class="container">
-    <div class="row text-center">
-        @foreach (var events in Model.Take(4))
-        {
-            <div class="col-xl-3 col-sm-6 mb-5">
-                <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
-                    <img src="@Url.Action("GetEvenPhoto", "Home", new { id = alumnus.UserId })" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
-                    <h5 class="mb-0">@alumnus.ApplicationUser.FirstName @alumnus.ApplicationUser.LastName</h5><span class="small text-uppercase text-muted">@alumnus.JobPosition at @alumnus.Company</span>
+    <div class="row ">
 
-                    <div class="additional-info text-left">
-                        <div class="additional-info-inner ">
-                            <h5 class="mb-4">@alumnus.ApplicationUser.FirstName.ToUpper() @alumnus.ApplicationUser.LastName.ToUpper()</h5>
-                            <span class="small text-uppercase text-muted mb-4">@alumnus.JobPosition at @alumnus.Company</span>
-                            <p>EMAIL: @alumnus.ApplicationUser.Email</p>
-                            <p>PHONE: @alumnus.ApplicationUser.PhoneNumber</p>
-                            <p>GRADUATION DATE: @alumnus.GraduationDate</p>
-                            <p>FIELD OF STUDY: @alumnus.FieldOfStudy</p>
-                            <!-- Add more information as needed -->
-                        </div>
+        @*  @if (User.Identity.IsAuthenticated){   *@
+        <div class="container mt-4 d-flex justify-content-end">
+            <a asp-action="Create" class="btn btn-primary">Create New Event</a>
+        </div>
+        @*   } *@
+        @foreach (var events in Model.EventList)
+        {
+            <div class="EventsWrapper col-md-4 ">
+                <div class="card mb-4" style="width: 22rem; height:35rem; margin: 20px 20px">
+                    <img src="@Url.Action("GetEventImage", "Home", new { id = events.Id })" class="card-img" alt="Event photo">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #0353A4; font-weight: bold">@($"{events.Title.ToUpper()}")</h5>
+                        <p class="card-text" style="color: #343a40;">
+                            <strong style="color: #0353A4;">Description:</strong> @events.Description <br />
+                            <strong style="color: #0353A4;">Date and Time:</strong> @events.Date <br />
+                            <strong style="color: #0353A4;">Location:</strong> @events.EventLocation<br />
+                            <strong style="color: #0353A4;">Ticket Price:</strong> @events.TicketPrice <br />
+                            <strong style="color: #0353A4;">Published By:</strong> @events.ApplicationUser.FirstName @events.ApplicationUser.LastName <br />
+
+                        </p>
+
+                        <a asp-action="Edit" asp-route-id="@events.Id" class="btn btn-secondary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@events.Id" class="btn btn-danger btn-sm">Delete</a>
 
                     </div>
                 </div>
@@ -186,26 +189,3 @@
     </div>
 </div>
 
-
-@* 
- <div class="container mt-5">
-    <div class="row">
-        <h1>Meet Our Alumni Students</h1>
-        @foreach (var alumnus in Model)
-        {
-            <div class="col-md-4">
-                <div class="card mb-4" style="border-color: grey; border-width: 1px;">
-                    <img class="card-img-top rounded-circle mx-auto d-block" style="width: 70%; margin-top: 20px; border: 3px solid #007BFF;" src="@Url.Action("GetUserImage", "Home", new { id = alumnus.UserId })" alt="Alumni photo">
-                    <div class="card-body" style="background-color: #f8f9fa;">
-                        <h5 class="card-title" style="color: #007BFF;">@($"{alumnus.ApplicationUser.FirstName} {alumnus.ApplicationUser.LastName}")</h5>
-                        <p class="card-text" style="color: #343a40;">
-                            <strong style="color: #6c757d;">Field of Study:</strong> @alumnus.FieldOfStudy <br />
-                            <strong style="color: #6c757d;">Job Position:</strong> @alumnus.JobPosition <br />
-                            <strong style="color: #6c757d;">Company:</strong> @alumnus.Company
-                        </p>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>  *@

@@ -1,5 +1,6 @@
 ﻿using Alumni.Data;
 using Alumni.Models;
+using Alumni.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,22 +16,32 @@ namespace Alumni.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        private readonly UserManager<ApplicationUser> _userManager;
-        
+        private readonly UserManager<ApplicationUser> _userManager; 
+      
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
-
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
+         
         }
 
         public async Task<IActionResult> Index()
         {
-            var alumni = await _context.Alumni.Include(a => a.ApplicationUser).ToListAsync();
-            return View(alumni);
+            var alumniList = await _context.Alumni.Include(a=> a.ApplicationUser).ToListAsync();
+
+           
+            var eventList = await _context.Events.ToListAsync(); // Assuming you have an Events DbSet in your ApplicationDbContext
+
+            var viewModel = new HomeIndexViewModel
+            {
+                AlumniList = alumniList,
+                EventList = eventList
+            };
+
+            return View(viewModel);
         }
 
 
@@ -50,9 +61,11 @@ namespace Alumni.Controllers
 
             return NotFound();
         }
+
+      
         //public IActionResult GetEventPhoto(int id)
         //{
-        //    var events = _userManager.Events.FirstOrDefault(u => u.Id == id);
+        //    var events = _eventsManager.Events.FirstOrDefault(u => u.Id == id);
 
         //    if (events != null)
         //    {
