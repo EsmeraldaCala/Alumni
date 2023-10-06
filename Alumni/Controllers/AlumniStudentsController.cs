@@ -29,8 +29,8 @@ namespace Alumni.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var events = await _context.Events.ToListAsync();
-            return View(events);
+            var alumni = await _context.Alumni.ToListAsync();
+            return View(alumni);
 
         }
 

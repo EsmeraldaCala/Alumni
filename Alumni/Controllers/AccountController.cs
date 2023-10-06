@@ -60,11 +60,12 @@ namespace Alumni.Controllers
                 }
                 else
                 {
+                    ViewBag.Error = "Invalid login attempt.";
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 }
             }
 
-            return View(model);
+            return View("Welcome",model);
         }
 
         [HttpPost]

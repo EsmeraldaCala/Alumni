@@ -4,6 +4,7 @@ using Alumni.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Alumni.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231005233105_AddingJobss")]
+    partial class AddingJobss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +40,7 @@ namespace Alumni.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("Alumni.Models.Alumni", b =>
@@ -129,9 +131,6 @@ namespace Alumni.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -266,7 +265,7 @@ namespace Alumni.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("JobOpportunities");
+                    b.ToTable("JobOpportunity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -301,23 +300,23 @@ namespace Alumni.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            ConcurrencyStamp = "21d36844-3320-4b72-9a63-6568164b2eef",
+                            Id = 3,
+                            ConcurrencyStamp = "b39da94d-f91e-4d7b-910b-6f2fa36b8e83",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1de6762c-f11e-4b9a-8f02-7a81bc10befd",
+                            ConcurrencyStamp = "a679a3de-421b-4e6b-b561-428377d73a7a",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
                         },
                         new
                         {
-                            Id = 3,
-                            ConcurrencyStamp = "663b9c12-01d4-4724-bab6-30fe8d480940",
-                            Name = "admin",
+                            Id = 1,
+                            ConcurrencyStamp = "4f672b35-d8c5-4784-8de4-4b910ce4864b",
+                            Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
                 });

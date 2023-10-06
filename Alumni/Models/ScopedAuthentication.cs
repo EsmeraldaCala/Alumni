@@ -26,6 +26,7 @@ namespace Alumni.Models
 
             else return null;
         }
+
         public string[] GetUserRoles()
         {
 

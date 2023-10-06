@@ -4,6 +4,7 @@ using Alumni.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Alumni.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231003223511_SuperAdminTable")]
+    partial class SuperAdminTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,25 +23,6 @@ namespace Alumni.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Alumni.Models.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Admins");
-                });
 
             modelBuilder.Entity("Alumni.Models.Alumni", b =>
                 {
@@ -131,9 +114,6 @@ namespace Alumni.Migrations
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -220,7 +200,7 @@ namespace Alumni.Migrations
                     b.ToTable("FacultyRepresentatives");
                 });
 
-            modelBuilder.Entity("Alumni.Models.JobOpportunity", b =>
+            modelBuilder.Entity("Alumni.Models.SuperAdmin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,45 +208,15 @@ namespace Alumni.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Company")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Deadline")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Details")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Experience")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Salary")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Summary")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<decimal?>("TicketPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("JobOpportunities");
+                    b.ToTable("SuperAdmin");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -302,23 +252,16 @@ namespace Alumni.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "21d36844-3320-4b72-9a63-6568164b2eef",
+                            ConcurrencyStamp = "6921effb-3d4f-49a0-bfc0-2f67c047543d",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1de6762c-f11e-4b9a-8f02-7a81bc10befd",
+                            ConcurrencyStamp = "a86f517a-bf23-4aea-bf7c-057698672e1b",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "663b9c12-01d4-4724-bab6-30fe8d480940",
-                            Name = "admin",
-                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -425,17 +368,6 @@ namespace Alumni.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Alumni.Models.Admin", b =>
-                {
-                    b.HasOne("Alumni.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("Admin")
-                        .HasForeignKey("Alumni.Models.Admin", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
             modelBuilder.Entity("Alumni.Models.Alumni", b =>
                 {
                     b.HasOne("Alumni.Models.ApplicationUser", "ApplicationUser")
@@ -469,11 +401,11 @@ namespace Alumni.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Alumni.Models.JobOpportunity", b =>
+            modelBuilder.Entity("Alumni.Models.SuperAdmin", b =>
                 {
                     b.HasOne("Alumni.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("SuperAdmin")
+                        .HasForeignKey("Alumni.Models.SuperAdmin", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -533,11 +465,11 @@ namespace Alumni.Migrations
 
             modelBuilder.Entity("Alumni.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Admin");
-
                     b.Navigation("Alumni");
 
                     b.Navigation("FacultyRepresentative");
+
+                    b.Navigation("SuperAdmin");
                 });
 #pragma warning restore 612, 618
         }

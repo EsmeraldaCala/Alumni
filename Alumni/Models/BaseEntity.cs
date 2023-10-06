@@ -6,5 +6,6 @@ namespace Alumni.Models
     {
         [Key]
         public int Id { get; set; }
+        
     }
 }

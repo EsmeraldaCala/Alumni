@@ -15,6 +15,8 @@ namespace Alumni.Data
         public DbSet<Alumni.Models.FacultyRepresentative> FacultyRepresentatives { get; set; }
 
         public DbSet<Alumni.Models.Events> Events { get; set; }
+        public DbSet<Alumni.Models.Admin> Admins { get; set; }
+        public DbSet<Alumni.Models.JobOpportunity> JobOpportunities{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +32,11 @@ namespace Alumni.Data
                 .HasOne(a => a.FacultyRepresentative)
                 .WithOne(b => b.ApplicationUser)
                 .HasForeignKey<Models.FacultyRepresentative>(b => b.UserId);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(a => a.Admin)
+                .WithOne(b => b.ApplicationUser)
+                .HasForeignKey<Models.Admin>(b => b.UserId);
 
             modelBuilder.Entity<Events>(entity =>
             {
@@ -48,10 +55,28 @@ namespace Alumni.Data
                     .HasForeignKey(e => e.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+            modelBuilder.Entity<JobOpportunity>(entity =>
+            {
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Details)
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.Summary)
+                    .HasMaxLength(500);
+
+                entity.HasOne(e => e.ApplicationUser)
+                    .WithMany()
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int> { Id = 1, Name = "Alumni", NormalizedName = "ALUMNI" },
-                new IdentityRole<int> { Id = 2, Name = "Faculty Representative", NormalizedName = "FACULTY REPRESENTATIVE" }
+                new IdentityRole<int> { Id = 2, Name = "Faculty Representative", NormalizedName = "FACULTY REPRESENTATIVE" },
+                 new IdentityRole<int> { Id = 3, Name = "admin", NormalizedName = "ADMIN" }
             );
 
         }

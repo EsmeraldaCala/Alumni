@@ -4,6 +4,7 @@ using Alumni.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Alumni.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231006000335_job")]
+    partial class job
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,21 +304,21 @@ namespace Alumni.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "21d36844-3320-4b72-9a63-6568164b2eef",
+                            ConcurrencyStamp = "0c1fb01c-7ec5-4f0a-9ee9-d5543aeca04e",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1de6762c-f11e-4b9a-8f02-7a81bc10befd",
+                            ConcurrencyStamp = "8b2dd84e-5c03-4fbc-8234-bfc0ccdf583d",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "663b9c12-01d4-4724-bab6-30fe8d480940",
+                            ConcurrencyStamp = "b0b0933e-de7e-4a08-9257-b88b749007a2",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });

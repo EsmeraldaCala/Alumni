@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Alumni>
+
+@{
+    ViewData["Title"] = "Our Alumni Students";
+}
+<style>
+    .mainSection {
+        background-image: url("images/main-photo.jpeg");
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        background-size: cover;
+        background-position: center center;
+        height: 300px;
+        background-image: url("images/main-photo.jpeg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        height: 300px;
+        display: flex; /* Center content vertically and horizontally */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        text-align: center; /* Center text within the div */
+        color: white; /* Text color */
+    }
+
+    .MenuHeader {
+        z-index: 2;
+        font-size: 4rem; /* Adjust font size as needed */
+        font-weight: bold; /* Make text bold */
+    }
+
+    .EventsWrapper {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+</style>
+<div class="mainSection">
+    <h2 class="MenuHeader ">Our Alumni Students</h2>
+</div>
+<div class="container">
+    <div class="row text-center">
+        @foreach (var alumnus in Model)
+        {
+            <div class="col-xl-3 col-sm-6 mb-5">
+                <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
+                    <img src="@Url.Action("GetUserImage", "Home", new { id = alumnus.UserId })" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
+                    <h5 class="mb-0">@alumnus.ApplicationUser?.FirstName @alumnus.ApplicationUser?.LastName</h5><span class="small text-uppercase text-muted">@alumnus.JobPosition at @alumnus.Company</span>
+
+                    <div class="additional-info text-left">
+                        <div class="additional-info-inner text-start ">
+                            <p class="card-text" style="color: #343a40;">
+                                <strong style="color: #0353A4;">Email:</strong> @alumnus.ApplicationUser?.Email <br />
+                                <strong style="color: #0353A4;">Phone Number:</strong> @alumnus.ApplicationUser?.PhoneNumber <br />
+                                <strong style="color: #0353A4;">Graduation Date:</strong> @alumnus.GraduationDate<br />
+                                <strong style="color: #0353A4;">Field of Study:</strong> @alumnus.FieldOfStudy <br />
+                               
+
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

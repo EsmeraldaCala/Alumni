@@ -62,23 +62,24 @@ namespace Alumni.Controllers
             return NotFound();
         }
 
-      
-        //public IActionResult GetEventPhoto(int id)
-        //{
-        //    var events = _eventsManager.Events.FirstOrDefault(u => u.Id == id);
 
-        //    if (events != null)
-        //    {
-        //        var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", events.Photo);
-        //        if (System.IO.File.Exists(imagePath))
-        //        {
-        //            var image = System.IO.File.OpenRead(imagePath);
-        //            return File(image, "image/jpeg");
-        //        }
-        //    }
+        public IActionResult GetEventPhoto(int id)
+        {
+            var events = _context.Events.FirstOrDefault(u => u.Id == id);
 
-        //    return NotFound();
-        //}
+            if (events != null && events.Photo != null)
+            {
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", events.Photo);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    var image = System.IO.File.OpenRead(imagePath);
+                    return File(image, "image/jpeg");
+                }
+                
+            }
+
+            return NotFound();
+        }
 
 
         public IActionResult Privacy()

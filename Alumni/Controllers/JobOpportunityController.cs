@@ -9,13 +9,13 @@ using static Humanizer.In;
 namespace Alumni.Controllers
 {
 
-    public class EventsController : Controller
+    public class JobOpportunityController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IScopedAuthentication _auth;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EventsController(ApplicationDbContext context, IScopedAuthentication auth, IWebHostEnvironment webHostEnvironment)
+        public JobOpportunityController(ApplicationDbContext context, IScopedAuthentication auth, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _auth = auth;
@@ -23,27 +23,27 @@ namespace Alumni.Controllers
         }
 
         // GET: Events
-        public async Task<IActionResult> Index()
-        {
-            var currentUserId = _auth.GetUserId();
-            //if (_auth.Identity == null)
-            //    return RedirectToAction("Welcome", "Account");
-            List<Events> events = new List<Events>();
-            if (currentUserId != null)
-            {
-                events = await _context.Events
-                .Include(e => e.ApplicationUser).Where(e => e.UserId == currentUserId)
-                .ToListAsync();
-            }
-            else
+        //public async Task<IActionResult> Index()
+        //{
+        //    var currentUserId = _auth.GetUserId();
+        //    //if (_auth.Identity == null)
+        //    //    return RedirectToAction("Welcome", "Account");
+        //    List<JobOpportunity> jobOpportunities = new List<JobOpportunity>();
+        //    if (currentUserId != null)
+        //    {
+        //        jobOpportunities = await _context.JobOpportunity
+        //        .Include(e => e.ApplicationUser).Where(e => e.UserId == currentUserId)
+        //        .ToListAsync();
+        //    }
+        //    else
 
-                events = await _context.Events
-                .Include(e => e.ApplicationUser)
-                .ToListAsync();
+        //        jobOpportunities = await _context.JobOpportunity
+        //        .Include(e => e.ApplicationUser)
+        //        .ToListAsync();
 
-            
-            return View(events);
-        }
+
+        //    return View(jobOpportunities);
+        //}
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -116,8 +116,8 @@ namespace Alumni.Controllers
                 TicketPrice = eventItem.TicketPrice,
                 Title = eventItem.Title,
                 UserId = eventItem.UserId,
-                Photo= eventItem.Photo,
-            }) ;
+                Photo = eventItem.Photo,
+            });
         }
 
         // POST: Events/Edit/5
