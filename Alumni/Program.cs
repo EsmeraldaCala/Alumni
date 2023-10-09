@@ -11,10 +11,19 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddRazorPages();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(
+    options =>
+    {
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequiredLength = 5;
+        options.Password.RequireDigit = false;
+    }
+    )
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PolicyName", builder =>

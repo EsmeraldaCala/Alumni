@@ -33,7 +33,7 @@ namespace Alumni.Controllers
             var alumniList = await _context.Alumni.Include(a=> a.ApplicationUser).ToListAsync();
 
            
-            var eventList = await _context.Events.ToListAsync(); // Assuming you have an Events DbSet in your ApplicationDbContext
+            var eventList = await _context.Events.Include(a => a.ApplicationUser).ToListAsync(); 
 
             var viewModel = new HomeIndexViewModel
             {
@@ -80,7 +80,23 @@ namespace Alumni.Controllers
 
             return NotFound();
         }
+        public IActionResult GetJobPhoto(int id)
+        {
+            var job = _context.Events.FirstOrDefault(u => u.Id == id);
 
+            if (job != null && job.Photo != null)
+            {
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", job.Photo);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    var image = System.IO.File.OpenRead(imagePath);
+                    return File(image, "image/jpeg");
+                }
+
+            }
+
+            return NotFound();
+        }
 
         public IActionResult Privacy()
         {

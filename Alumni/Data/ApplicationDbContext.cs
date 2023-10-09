@@ -16,7 +16,7 @@ namespace Alumni.Data
 
         public DbSet<Alumni.Models.Events> Events { get; set; }
         public DbSet<Alumni.Models.Admin> Admins { get; set; }
-        public DbSet<Alumni.Models.JobOpportunity> JobOpportunities{ get; set; }
+        public DbSet<Alumni.Models.JobOpportunity> JobOpportunity{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

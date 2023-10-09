@@ -10,6 +10,8 @@ namespace Alumni.Models
         public string[] GetUserRoles();
         public bool IsAlumni();
         public bool IsFacultyRepresentative();
+        public bool isAdmin();
+        public string GetUserName();
     }
 
 }

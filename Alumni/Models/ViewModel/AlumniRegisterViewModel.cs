@@ -27,6 +27,8 @@ namespace Alumni.Models.ViewModel
         public DateTime GraduationDate { get; set; }
         public string Company { get; set; }
         public IFormFile ProfilePicture { get; set; }
+        public int? UserId{ get; set; }
+        public int? Id { get; set; }
     }
 
     public class FacultyRepRegisterViewModel

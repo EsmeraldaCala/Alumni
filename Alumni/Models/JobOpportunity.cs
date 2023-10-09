@@ -18,6 +18,6 @@ namespace Alumni.Models
         public int Experience { get; set; }
         public int Salary { get; set; }
         public string? Email { get; set; }
-        public decimal? TicketPrice { get; set; }
+       
     }
 }

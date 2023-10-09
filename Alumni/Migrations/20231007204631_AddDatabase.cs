@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Alumni.Migrations
 {
-    public partial class AddedAlumniAndFacultyRepresentativesAndEvents : Migration
+    public partial class AddDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,6 +70,25 @@ namespace Alumni.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Admins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -190,6 +209,7 @@ namespace Alumni.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     EventLocation = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -213,7 +233,6 @@ namespace Alumni.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Faculty = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FieldOfStudy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -227,15 +246,53 @@ namespace Alumni.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "fca3afac-727b-449e-bba4-3fab289f418a", "Alumni", "ALUMNI" });
+            migrationBuilder.CreateTable(
+                name: "JobOpportunity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Summary = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Deadline = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Experience = table.Column<int>(type: "int", nullable: false),
+                    Salary = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobOpportunity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobOpportunity_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "4f539af7-5fb1-4e1b-a288-e7ca56b68c61", "Faculty Representative", "FACULTY REPRESENTATIVE" });
+                values: new object[] { 1, "dd0e1706-8f7b-4c77-b1c5-cfefe1d524b9", "Alumni", "ALUMNI" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { 2, "f9c4dcfd-cc02-4364-a5f4-863a4fbbeabe", "Faculty Representative", "FACULTY REPRESENTATIVE" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { 3, "f2b41b95-d646-411f-aef2-6d28b0b68940", "admin", "ADMIN" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Admins_UserId",
+                table: "Admins",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Alumni_UserId",
@@ -292,10 +349,18 @@ namespace Alumni.Migrations
                 table: "FacultyRepresentatives",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobOpportunity_UserId",
+                table: "JobOpportunity",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Admins");
+
             migrationBuilder.DropTable(
                 name: "Alumni");
 
@@ -319,6 +384,9 @@ namespace Alumni.Migrations
 
             migrationBuilder.DropTable(
                 name: "FacultyRepresentatives");
+
+            migrationBuilder.DropTable(
+                name: "JobOpportunity");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

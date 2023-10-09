@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Alumni.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231003223511_SuperAdminTable")]
-    partial class SuperAdminTable
+    [Migration("20231007204631_AddDatabase")]
+    partial class AddDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,25 @@ namespace Alumni.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Alumni.Models.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Admins");
+                });
 
             modelBuilder.Entity("Alumni.Models.Alumni", b =>
                 {
@@ -200,7 +219,7 @@ namespace Alumni.Migrations
                     b.ToTable("FacultyRepresentatives");
                 });
 
-            modelBuilder.Entity("Alumni.Models.SuperAdmin", b =>
+            modelBuilder.Entity("Alumni.Models.JobOpportunity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,15 +227,42 @@ namespace Alumni.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Details")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Experience")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Salary")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Summary")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
-                    b.ToTable("SuperAdmin");
+                    b.ToTable("JobOpportunity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -252,16 +298,23 @@ namespace Alumni.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "6921effb-3d4f-49a0-bfc0-2f67c047543d",
+                            ConcurrencyStamp = "dd0e1706-8f7b-4c77-b1c5-cfefe1d524b9",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "a86f517a-bf23-4aea-bf7c-057698672e1b",
+                            ConcurrencyStamp = "f9c4dcfd-cc02-4364-a5f4-863a4fbbeabe",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "f2b41b95-d646-411f-aef2-6d28b0b68940",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -368,6 +421,17 @@ namespace Alumni.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Alumni.Models.Admin", b =>
+                {
+                    b.HasOne("Alumni.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne("Admin")
+                        .HasForeignKey("Alumni.Models.Admin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Alumni.Models.Alumni", b =>
                 {
                     b.HasOne("Alumni.Models.ApplicationUser", "ApplicationUser")
@@ -401,11 +465,11 @@ namespace Alumni.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Alumni.Models.SuperAdmin", b =>
+            modelBuilder.Entity("Alumni.Models.JobOpportunity", b =>
                 {
                     b.HasOne("Alumni.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("SuperAdmin")
-                        .HasForeignKey("Alumni.Models.SuperAdmin", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -465,11 +529,11 @@ namespace Alumni.Migrations
 
             modelBuilder.Entity("Alumni.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Admin");
+
                     b.Navigation("Alumni");
 
                     b.Navigation("FacultyRepresentative");
-
-                    b.Navigation("SuperAdmin");
                 });
 #pragma warning restore 612, 618
         }

@@ -131,9 +131,6 @@ namespace Alumni.Migrations
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,9 +248,6 @@ namespace Alumni.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal?>("TicketPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -266,7 +260,7 @@ namespace Alumni.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("JobOpportunities");
+                    b.ToTable("JobOpportunity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -302,21 +296,21 @@ namespace Alumni.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "21d36844-3320-4b72-9a63-6568164b2eef",
+                            ConcurrencyStamp = "dd0e1706-8f7b-4c77-b1c5-cfefe1d524b9",
                             Name = "Alumni",
                             NormalizedName = "ALUMNI"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1de6762c-f11e-4b9a-8f02-7a81bc10befd",
+                            ConcurrencyStamp = "f9c4dcfd-cc02-4364-a5f4-863a4fbbeabe",
                             Name = "Faculty Representative",
                             NormalizedName = "FACULTY REPRESENTATIVE"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "663b9c12-01d4-4724-bab6-30fe8d480940",
+                            ConcurrencyStamp = "f2b41b95-d646-411f-aef2-6d28b0b68940",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });

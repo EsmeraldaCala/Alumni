@@ -29,7 +29,7 @@ namespace Alumni.Controllers
             //if (_auth.Identity == null)
             //    return RedirectToAction("Welcome", "Account");
             List<Events> events = new List<Events>();
-            if (currentUserId != null)
+            if (currentUserId != null && _auth.IsAlumni())
             {
                 events = await _context.Events
                 .Include(e => e.ApplicationUser).Where(e => e.UserId == currentUserId)

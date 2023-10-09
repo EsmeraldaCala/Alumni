@@ -23,27 +23,29 @@ namespace Alumni.Controllers
         }
 
         // GET: Events
-        //public async Task<IActionResult> Index()
-        //{
-        //    var currentUserId = _auth.GetUserId();
-        //    //if (_auth.Identity == null)
-        //    //    return RedirectToAction("Welcome", "Account");
-        //    List<JobOpportunity> jobOpportunities = new List<JobOpportunity>();
-        //    if (currentUserId != null)
-        //    {
-        //        jobOpportunities = await _context.JobOpportunity
-        //        .Include(e => e.ApplicationUser).Where(e => e.UserId == currentUserId)
-        //        .ToListAsync();
-        //    }
-        //    else
+        public async Task<IActionResult> Index()
+        {
+            var currentUserId = _auth.GetUserId();
+            //if (_auth.Identity == null)
+            //    return RedirectToAction("Welcome", "Account");
+            List<JobOpportunity> JobOpportunity = new List<JobOpportunity>();
+            if (currentUserId != null)
+            {
+                JobOpportunity = await _context.JobOpportunity
+                .Include(e => e.ApplicationUser).Where(e => e.UserId == currentUserId)
+                .ToListAsync();
+            }
+            else
 
-        //        jobOpportunities = await _context.JobOpportunity
-        //        .Include(e => e.ApplicationUser)
-        //        .ToListAsync();
+                JobOpportunity = await _context.JobOpportunity
+                .Include(e => e.ApplicationUser)
+                .ToListAsync();
 
 
-        //    return View(jobOpportunities);
-        //}
+            return View(JobOpportunity);
+        }
+
+      
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -56,16 +58,16 @@ namespace Alumni.Controllers
                 return NotFound();
             }
 
-            var eventItem = await _context.Events
+            var JobOppItem = await _context.JobOpportunity
                 .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (eventItem == null)
+            if (JobOppItem == null)
             {
                 return NotFound();
             }
 
-            return View(eventItem);
+            return View(JobOppItem);
         }
 
         // GET: Events/Create
@@ -74,107 +76,111 @@ namespace Alumni.Controllers
 
             //if (_auth.Identity == null)
             //    return RedirectToAction("Welcome", "Account");
-            return View(new Events() { UserId = _auth.GetUserId() ?? 0 });
+            return View(new JobOpportunity() { UserId = _auth.GetUserId() ?? 0 });
         }
 
         // POST: Events/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,UserId,EventLocation,Date,TicketPrice, Photo")] Events eventItem)
+        public async Task<IActionResult> Create([Bind("Id,Title,Summary,UserId,Details,Company,Deadline, Experience, Salary, Email ")] JobOpportunity JobOppItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(eventItem);
+                _context.Add(JobOppItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(eventItem);
+            return View(JobOppItem);
         }
 
         // GET: Events/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
+        //public async Task<IActionResult> Edit(int? id)
+        //{
 
-            //if (_auth.Identity == null)
-            //    return RedirectToAction("Welcome", "Account");
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //    //if (_auth.Identity == null)
+        //    //    return RedirectToAction("Welcome", "Account");
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var eventItem = await _context.Events.FindAsync(id);
-            if (eventItem == null)
-            {
-                return NotFound();
-            }
-            return View(new EventsViewModel()
-            {
-                Id = eventItem.Id,
-                Date = eventItem.Date,
-                EventLocation = eventItem.EventLocation,
-                Description = eventItem.Description,
-                TicketPrice = eventItem.TicketPrice,
-                Title = eventItem.Title,
-                UserId = eventItem.UserId,
-                Photo = eventItem.Photo,
-            });
-        }
+        //    var JobOppItem = await _context.JobOpportunities.FindAsync(id);
+        //    if (JobOppItem == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(new JobOpportunityViewModel()
+        //    {
+        //        Id = JobOppItem.Id,
+        //        Title = JobOppItem.Title,
+        //        Summary = JobOppItem.Summary,
+        //        Details = JobOppItem.Details,
+        //        Company = JobOppItem.Company,
+        //        Deadline = JobOppItem.Deadline,
+        //        UserId = JobOppItem.UserId,
+        //        Experience = JobOppItem.Experience,
+        //        Salary = JobOppItem.Salary,
+        //        Email = JobOppItem.Email,
 
-        // POST: Events/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EventsViewModel eventItem)
-        {
-            if (eventItem.Id != eventItem.Id)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (eventItem.Picture != null)
-                    {
-                        string? uniqueFileName = null;
-                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                        uniqueFileName = Guid.NewGuid().ToString() + "_" + eventItem.Picture.FileName;
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        using var fileStream = new FileStream(filePath, FileMode.Create);
-                        await eventItem.Picture.CopyToAsync(fileStream);
-                        eventItem.Photo = uniqueFileName;
-                    }
-                    _context.Update(eventItem);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventExists(eventItem.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(eventItem);
-        }
+        //    });
+        //}
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var eventItem = await _context.Events.FindAsync(id);
-            _context.Events.Remove(eventItem);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: Events/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(EventsViewModel eventItem)
+        //{
+        //    if (eventItem.Id != eventItem.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-        private bool EventExists(int id)
-        {
-            return _context.Events.Any(e => e.Id == id);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            if (eventItem.Picture != null)
+        //            {
+        //                string? uniqueFileName = null;
+        //                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+        //                uniqueFileName = Guid.NewGuid().ToString() + "_" + eventItem.Picture.FileName;
+        //                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+        //                using var fileStream = new FileStream(filePath, FileMode.Create);
+        //                await eventItem.Picture.CopyToAsync(fileStream);
+        //                eventItem.Photo = uniqueFileName;
+        //            }
+        //            _context.Update(eventItem);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!EventExists(eventItem.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(eventItem);
+        //}
+
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var eventItem = await _context.Events.FindAsync(id);
+        //    _context.Events.Remove(eventItem);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        //private bool EventExists(int id)
+        //{
+        //    return _context.Events.Any(e => e.Id == id);
+        //}
     }
 }
 

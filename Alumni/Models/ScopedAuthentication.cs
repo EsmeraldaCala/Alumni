@@ -1,12 +1,13 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Alumni.Models
 {
     public class ScopedAuthentication : IScopedAuthentication
     {
+
         public ScopedAuthentication()
         {
-
         }
         public System.Security.Principal.IIdentity Identity { get; set; }
         public int? GetUserId()
@@ -46,11 +47,33 @@ namespace Alumni.Models
             return roles.Any(u => u.ToLower() == "Faculty Representative".ToLower());
         }
 
+        public string GetUserName()
+        {
+            if (Identity is ClaimsIdentity claimsIdentity)
+            {
+                // Get the user ID
+                string? email = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+
+                if (!String.IsNullOrWhiteSpace(email))
+                {
+                    return email;
+                }
+                else
+                    return String.Empty;
+            }
+            return String.Empty;
+        }
         public bool IsAlumni()
         {
 
             var roles = GetUserRoles();
             return roles.Any(u => u.ToLower() == "Alumni".ToLower());
+        }
+        public bool isAdmin()
+        {
+
+            var roles = GetUserRoles();
+            return roles.Any(u => u.ToLower() == "admin".ToLower());
         }
     }
 }

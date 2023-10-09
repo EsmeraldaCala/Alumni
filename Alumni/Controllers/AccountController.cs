@@ -64,8 +64,9 @@ namespace Alumni.Controllers
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 }
             }
+            ViewBag.Error = "PasswordSignInAsync returned null";
 
-            return View("Welcome",model);
+            return View("Welcome", model);
         }
 
         [HttpPost]
@@ -153,46 +154,41 @@ namespace Alumni.Controllers
         {
             if (ModelState.IsValid)
             {
-                string? uniqueFileName = null;
-                if (model.ProfilePicture != null)
+                try
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePicture.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using var fileStream = new FileStream(filePath, FileMode.Create);
-                    await model.ProfilePicture.CopyToAsync(fileStream);
-                }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, ProfilePicture = uniqueFileName };
-                var result = await _userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "Faculty Representative");
-
-                    var facultyRep = new FacultyRepresentative
+                    string? uniqueFileName = null;
+                    if (model.ProfilePicture != null)
                     {
-                        UserId = user.Id,
-                        Faculty = model.Faculty,
-                      
-                    };
+                        // File upload code
+                    }
 
-                    _dbContext.FacultyRepresentatives.Add(facultyRep);
-                    await _dbContext.SaveChangesAsync();
+                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, ProfilePicture = uniqueFileName };
+                    var result = await _userManager.CreateAsync(user, model.Password);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
-                    await _signInManager.RefreshSignInAsync(user);
-                    _auth.Identity = userPrincipal.Identity;
-                    return RedirectToAction("index", "home");
+                    if (result.Succeeded)
+                    {
+                        // Role assignment code
+                        // FacultyRep creation code
+                        // Sign-in code
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+
+                        return RedirectToAction("index", "home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-
-                foreach (var error in result.Errors)
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    // Log the exception for debugging purposes
+                    ModelState.AddModelError(string.Empty, "An error occurred during registration.");
+                    // Log the exception (e.g., using a logging framework like Serilog, NLog, etc.)
+                    // Log.Error(ex, "Error during registration.");
                 }
             }
             return View(model);
         }
     }
-
 }

@@ -94,7 +94,7 @@
                             <strong style="color: #0353A4;">Published By:</strong> @events.ApplicationUser.FirstName @events.ApplicationUser.LastName <br />
 
                     </p>
-                        @if (_authentication.Identity != null && _authentication.Identity.IsAuthenticated && _authentication.GetUserId() == events.UserId)
+                        @if (_authentication.Identity != null && _authentication.Identity.IsAuthenticated && _authentication.GetUserId() == events.UserId || _authentication.isAdmin())
                         { 
                             <a asp-action="Edit" asp-route-id="@events.Id" class="btn btn-secondary btn-sm">Edit</a>
                             <a asp-action="Delete" asp-route-id="@events.Id" class="btn btn-danger btn-sm">Delete</a>
