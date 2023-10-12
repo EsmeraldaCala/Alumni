@@ -39,26 +39,29 @@
 </div>
 <div class="container">
     <div class="row text-center">
-        @* @if (_authentication.Identity != null && _authentication.Identity.IsAuthenticated)
-        { *@
+         @if (_authentication.Identity != null && _authentication.Identity.IsAuthenticated)
+        {
             <div class="container mt-4 d-flex justify-content-end">
                 <form asp-controller="JobOpportunity" asp-action="Create" method="get">
                     <button type="submit" class="button">Create New Event</button>
                 </form>
             </div>
-        
+        }
         @foreach (var job in Model)
         {
             <div class="col-xl-3 col-sm-6 mb-5">
                 <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
-                    <img src="@Url.Action("GetJobPhoto", "Home", new { id = job.UserId })" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
+                    <img src="~/images/jobPhoto.jpg" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
                    
                     <div class="additional-info text-left">
                         <div class="additional-info-inner text-start ">
+                            <h5> <strong style="color: #0353A4;">@job.Company is hiring @job.Title</strong></h5> <br />
                             <p class="card-text" style="color: #343a40;">
-                                <strong style="color: #0353A4;">@job.Title at @job.Company</strong> <br />
                                 <strong style="color: #0353A4;">Description:</strong> @job.Summary<br />
                                 <strong style="color: #0353A4;">Deadline:</strong> @job.Deadline <br />
+                                <strong style="color: #0353A4;">Salary:</strong> @job.Salary <br />
+                                <strong style="color: #0353A4;">Experience:</strong> @job.Experience <br />
+                                <strong style="color: #0353A4;">Email:</strong> @job.Email <br />
 
 
                             </p>

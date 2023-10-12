@@ -1,7 +1,21 @@
-﻿@model IEnumerable<Alumni>
+﻿@using Alumni.Models.ViewModel;
+@using Microsoft.AspNetCore.Identity;
+@model AlumniFacultyVM
 @inject IScopedAuthentication _authentication
+
 @{
-    ViewData["Title"] = "Our Alumni Students";
+    string title = string.Empty;
+
+    if (_authentication.Identity?.IsAuthenticated == true && _authentication.isAdmin())
+    {
+        ViewData["Title"] = "Users";
+        title = "Users";
+    }
+    else
+    {
+        ViewData["Title"] = "Our Alumni Students";
+        title = "Our Alumni Students";
+    }
 }
 <style>
     .mainSection {
@@ -35,14 +49,77 @@
     }
 </style>
 <div class="mainSection">
-    <h2 class="MenuHeader ">Our Alumni Students</h2>
+    <h2 class="MenuHeader ">@title</h2>
 </div>
+@if (_authentication.Identity?.IsAuthenticated == true && _authentication.isAdmin())
+{
+    <div class="container py-5">
+        <div class="row text-center text-black">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4">Our Faculty Representatives</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- End -->
+    <div class="container">
+        <div class="row text-center">
+            @if (_authentication.Identity?.IsAuthenticated == true && _authentication.isAdmin())
+            {
+            <p class="float-end">
+                <a asp-action="RegisterFacultyRep" class="btn btn-primary">Add New Faculty</a>
+            </p>
+            }
+            <br>
+            @foreach (var alumnus in Model.FacultyRepresentatives!)
+            {
+                <div class="col-xl-3 col-sm-6 mb-5">
+                    <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4" style="height: 500px !important;">
+                        <img src="~/images/c338b728-90f8-4ab5-93d1-24b80cb38f31_photo.png" alt="Faculty Photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm" />
+                        <h5 class="mb-0">@alumnus.ApplicationUser?.FirstName @alumnus.ApplicationUser?.LastName</h5>
+                        <h6 class="mb-0">@alumnus.Faculty</h6>
+
+                        <div class="additional-info text-left">
+                            <div class="additional-info-inner text-start ">
+                                <p class="card-text" style="color: #343a40;">
+                                    <strong style="color: #0353A4;">Email:</strong> @alumnus.ApplicationUser?.Email <br />
+                                    <strong style="color: #0353A4;">Phone Number:</strong> @alumnus.ApplicationUser?.PhoneNumber <br />
+
+
+                                </p>
+                                @if (_authentication.IsFacultyRepresentative() || _authentication.isAdmin())
+                                {
+                                    <a asp-action="Edit" asp-route-id="@alumnus.Id" class="btn btn-secondary btn-sm">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@alumnus.Id" asp-route-source="fr" class="btn btn-danger btn-sm">Delete</a>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+<div class="container py-5">
+    <div class="row text-center text-black">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="display-4"> Our Alumni Students</h1>
+        </div>
+    </div>
+</div><!-- End -->
 <div class="container">
     <div class="row text-center">
-        @foreach (var alumnus in Model)
+        @if (_authentication.Identity?.IsAuthenticated == true && _authentication.isAdmin())
+        {
+        <p class="float-end">
+            <a asp-action="RegisterAlumni" class="btn btn-primary">Add New Alumni</a>
+        </p>
+        }
+        @foreach (var alumnus in Model.Alumnis!)
         {
             <div class="col-xl-3 col-sm-6 mb-5">
-                <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4">
+                <div class="AlumniCard bg-white rounded shadow-sm py-5 px-4" style="min-height: 550px !important">
                     <img src="@Url.Action("GetUserImage", "Home", new { id = alumnus.UserId })" alt="Alumni photo" width="100%" height="100%" class="img-fluidS mb-3 rounded shadow-sm">
                     <h5 class="mb-0">@alumnus.ApplicationUser?.FirstName @alumnus.ApplicationUser?.LastName</h5><span class="small text-uppercase text-muted">@alumnus.JobPosition at @alumnus.Company</span>
 
@@ -53,13 +130,13 @@
                                 <strong style="color: #0353A4;">Phone Number:</strong> @alumnus.ApplicationUser?.PhoneNumber <br />
                                 <strong style="color: #0353A4;">Graduation Date:</strong> @alumnus.GraduationDate<br />
                                 <strong style="color: #0353A4;">Field of Study:</strong> @alumnus.FieldOfStudy <br />
-                               
+
 
                             </p>
-                            @if ( _authentication.IsFacultyRepresentative() || _authentication.isAdmin())
+                            @if (_authentication.IsFacultyRepresentative() || _authentication.isAdmin())
                             {
                                 <a asp-action="Edit" asp-route-id="@alumnus.Id" class="btn btn-secondary btn-sm">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@alumnus.Id" class="btn btn-danger btn-sm">Delete</a>
+                                <a asp-action="Delete" asp-route-id="@alumnus.Id" asp-route-source="al" class="btn btn-danger btn-sm">Delete</a>
                             }
                         </div>
 

@@ -73,6 +73,7 @@ app.UseMvc(routes =>
         "default",
         "{controller=Home}/{action=Index}/{id?}");
 });
+
 app.MapRazorPages();
 
 app.Run();

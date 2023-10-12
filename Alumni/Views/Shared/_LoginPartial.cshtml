@@ -6,20 +6,25 @@
     var username = _authentication.GetUserName();
 }
 <ul class="navbar-nav">
-    @if (_authentication.Identity !=null&& _authentication.Identity.IsAuthenticated)
-{
-    
-        <li class="nav-item" style="z-index: 100">
-            
-            <form class="form-inline" asp-action="Logout" asp-controller="Account"  >
-                <button type="submit" class="nav-link btn btn-link text-dark">hi @username Logout</button>
-        </form>
-    </li>
-}
-else
-{
+    @if (_authentication.Identity != null && _authentication.Identity.IsAuthenticated)
+    {
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle fa-2x"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right text-center" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">@username</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" asp-action="Details" asp-controller="Account">My Profile</a></li>
+                <li><a class="dropdown-item text-danger" asp-action="Logout" asp-controller="Account">Logout</a></li>
+            </ul>
+        </li>
+    }
+    else
+    {
         <li class="nav-item" style="z-index: 100">
             <a class="nav-link text-dark" asp-controller="Account" asp-action="Welcome">Login</a>
-    </li>
-}
+        </li>
+    }
 </ul>

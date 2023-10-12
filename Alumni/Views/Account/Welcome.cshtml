@@ -29,20 +29,25 @@
         color: white !important;
         background-color: #3b5998;
     }
-
+    .form-control{
+        background: #d1eeff4d;
+        backdrop-filter: blur(20px);
+        border-radius: 8px;
+    }
 </style>
 
     <div class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card border-0 shadow rounded-3 my-5">
-                    <div class="card-body p-4 p-sm-5">
-                        <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+            <div class="card border-0 shadow rounded-3 my-5 " style="background: hsla(0, 0%, 100%, 0.65);
+            backdrop-filter: blur(20px);">
+                <div class="card-body p-4 p-sm-5 ">
+                        <h3 class="card-title text-center mb-5 fw-light fs-5">Sign In</h3>
                         
                         <form method="post" asp-action="Login">
                                 <div class="mb-3">
                                     <label asp-for="Email" class="form-label"><i class="fas fa-envelope"></i> Email</label>
-                                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email address" />
+                                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email address"  />
                                     @if(ViewBag.Error != null)
                             {
                                 <span asp-validation-for="Email" class="text-danger">@ViewBag.Error</span>
@@ -65,12 +70,12 @@
                             <hr class="my-4">
                             <div class="d-grid mb-2">
                                 <a href="/Account/RegisterAlumni" class="btn btn-google btn-login text-uppercase fw-bold">
-                                    <i class="fab fa-google me-2"></i> Sign in as Alumni
+                                    Sign in as Alumni
                                 </a>
                             </div>
                             <div class="d-grid">
                                 <a href="/Account/RegisterFacultyRep" class="btn btn-facebook btn-login text-uppercase fw-bold">
-                                    <i class="fab fa-facebook-f me-2"></i> Sign in as Faculty Representative
+                                     Sign in as Faculty Representative
                                 </a>
                             </div>
                         

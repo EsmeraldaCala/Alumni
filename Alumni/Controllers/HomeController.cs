@@ -80,23 +80,7 @@ namespace Alumni.Controllers
 
             return NotFound();
         }
-        public IActionResult GetJobPhoto(int id)
-        {
-            var job = _context.Events.FirstOrDefault(u => u.Id == id);
-
-            if (job != null && job.Photo != null)
-            {
-                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", job.Photo);
-                if (System.IO.File.Exists(imagePath))
-                {
-                    var image = System.IO.File.OpenRead(imagePath);
-                    return File(image, "image/jpeg");
-                }
-
-            }
-
-            return NotFound();
-        }
+       
 
         public IActionResult Privacy()
         {

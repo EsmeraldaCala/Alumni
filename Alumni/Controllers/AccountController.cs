@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Alumni.Controllers
@@ -69,8 +70,7 @@ namespace Alumni.Controllers
             return View("Welcome", model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -78,7 +78,17 @@ namespace Alumni.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //public async Task<IActionResult> Details()
+        //{
+        //    var user = await _auth.GetCurrentUserAsync();
 
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(user);
+        //}
 
         [HttpGet]
         public IActionResult RegisterAlumni()
@@ -168,9 +178,31 @@ namespace Alumni.Controllers
                     if (result.Succeeded)
                     {
                         // Role assignment code
+                        await _userManager.AddToRoleAsync(user, "Faculty Representative");
+
+                        // Add claims for email and name
+                        await _userManager.AddClaimsAsync(user, new[]
+                        {
+                                new Claim(ClaimTypes.Name, $"{model.FirstName} {model.LastName}"),
+                                new Claim(ClaimTypes.Email, model.Email),
+                                new Claim(ClaimTypes.Role, "Faculty Representative")
+                    });
+
                         // FacultyRep creation code
+                        FacultyRepresentative facultyRepresentative = new()
+                        {
+                            UserId = user.Id,
+                            Faculty = model.Faculty
+                        };
+                        _dbContext.FacultyRepresentatives.Add(facultyRepresentative);
+                        await _dbContext.SaveChangesAsync();
+
                         // Sign-in code
+
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+                        await _signInManager.RefreshSignInAsync(user);
+                        _auth.Identity = userPrincipal.Identity;
 
                         return RedirectToAction("index", "home");
                     }
